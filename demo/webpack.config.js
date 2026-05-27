@@ -1,3 +1,10 @@
+/**
+ * Webpack configuration for the jarsdraw demo.
+ *
+ * Bundles bootstrap.js as the entry point, copies index.html to dist/,
+ * enables async WebAssembly, and watches the compiled pkg/ files so the
+ * dev server reloads when wasm-pack rebuilds the Rust library.
+ */
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const path = require('path');
 
