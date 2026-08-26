@@ -1,5 +1,5 @@
 {
-    "name": "jarsdraw-demo",
+    "name": "jarsdraw-demo-application",
     "version": "0.1.0",
     "description": "Demo application for jarsdraw",
     "private": true,
@@ -21,7 +21,7 @@
     "author": "Andydevs",
     "license": "MIT",
     "dependencies": {
-        "jarsdraw-demo": "file:pkg/jarsdraw_demo.js"
+        "jarsdraw-demo": "file:./pkg"
     },
     "devDependencies": {
         "chokidar-cli": "^3.0.0",

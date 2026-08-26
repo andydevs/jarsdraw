@@ -2,7 +2,6 @@
 //!
 //! Exposes [`JarsdrawDemo`] to JavaScript, which wraps a `<canvas>` element
 //! and handles drawing operations triggered by user interaction.
-use core::f64;
 use wasm_bindgen::prelude::*;
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement, window};
 
@@ -18,6 +17,7 @@ fn main() {
 pub struct JarsdrawDemo {
     canvas: HtmlCanvasElement,
     ctx: CanvasRenderingContext2d,
+    points: Vec<(f64, f64)>,
 }
 
 #[wasm_bindgen]
@@ -40,7 +40,7 @@ impl JarsdrawDemo {
             .ok_or(JsValue::from("2d rendering context unavailable"))?
             .dyn_into::<CanvasRenderingContext2d>()
             .map_err(|_| JsValue::from("Unable to convert to CanvasRenderingContext2d"))?;
-        Ok(Self { canvas, ctx })
+        Ok(Self { canvas, ctx, points: Vec::new() })
     }
 
     /// Returns the canvas width in pixels.
@@ -55,18 +55,28 @@ impl JarsdrawDemo {
         self.canvas.height() as f64
     }
 
-    /// Clears the entire canvas.
-    pub fn clear(&self) {
+    /// Clears the entire canvas and resets the polyline being drawn.
+    pub fn clear(&mut self) {
         web_sys::console::log_1(&"Clearing canvas".into());
         self.ctx.clear_rect(0.0, 0.0, self.width(), self.height());
+        self.points.clear();
     }
 
-    /// Draws a filled black circle of radius 10 at the given canvas coordinates.
-    pub fn click(&self, x: u32, y: u32) {
-        web_sys::console::log_1(&format!("Drawing shape at ({x}, {y})").into());
-        self.ctx.set_fill_style_str("black");
-        self.ctx.begin_path();
-        self.ctx.arc(x as f64, y as f64, 10.0, 0.0, f64::consts::TAU).unwrap();
-        self.ctx.fill();
+    /// Adds a point to the polyline at the given canvas coordinates, extending
+    /// the drawn line from the previous point (if any).
+    pub fn click(&mut self, x: u32, y: u32) {
+        web_sys::console::log_1(&format!("Adding point at ({x}, {y})").into());
+        let point = (x as f64, y as f64);
+
+        if let Some(&(prev_x, prev_y)) = self.points.last() {
+            self.ctx.set_stroke_style_str("black");
+            self.ctx.set_line_width(2.0);
+            self.ctx.begin_path();
+            self.ctx.move_to(prev_x, prev_y);
+            self.ctx.line_to(point.0, point.1);
+            self.ctx.stroke();
+        }
+
+        self.points.push(point);
     }
 }
