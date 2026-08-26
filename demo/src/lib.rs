@@ -2,8 +2,8 @@
 //!
 //! Exposes [`JarsdrawDemo`] to JavaScript, which wraps a `<canvas>` element
 //! and handles drawing operations triggered by user interaction.
+use jarsdraw::Canvas;
 use wasm_bindgen::prelude::*;
-use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement, window};
 
 /// Initialize console panic hook
 #[wasm_bindgen(start)]
@@ -15,8 +15,7 @@ fn main() {
 /// drawing operations to JavaScript.
 #[wasm_bindgen]
 pub struct JarsdrawDemo {
-    canvas: HtmlCanvasElement,
-    ctx: CanvasRenderingContext2d,
+    canvas: Canvas,
     points: Vec<(f64, f64)>,
 }
 
@@ -26,39 +25,29 @@ impl JarsdrawDemo {
     ///
     /// Returns an error if the element cannot be found or cast to a canvas.
     #[wasm_bindgen(constructor)]
-    pub fn new(id: &str) -> Result<Self, JsValue> {
-        let canvas = window()
-            .ok_or(JsValue::from("Unable to load window"))?
-            .document()
-            .ok_or(JsValue::from("Unable to load document"))?
-            .get_element_by_id(id)
-            .ok_or(JsValue::from(format!("Could not find html element by id \"{id}\"")))?
-            .dyn_into::<HtmlCanvasElement>()
-            .map_err(|_| JsValue::from(format!("Element with id \"{id}\" can not be converted to canvas")))?;
-        let ctx = canvas
-            .get_context("2d")?
-            .ok_or(JsValue::from("2d rendering context unavailable"))?
-            .dyn_into::<CanvasRenderingContext2d>()
-            .map_err(|_| JsValue::from("Unable to convert to CanvasRenderingContext2d"))?;
-        Ok(Self { canvas, ctx, points: Vec::new() })
+    pub fn new(selector: &str) -> Result<Self, JsValue> {
+        let canvas = Canvas::from_selector(selector)?;
+        Ok(Self {
+            canvas,
+            points: Vec::new(),
+        })
     }
 
     /// Returns the canvas width in pixels.
     #[wasm_bindgen(getter)]
     pub fn width(&self) -> f64 {
-        self.canvas.width() as f64
+        self.canvas.dimensions().0 as f64
     }
 
     /// Returns the canvas height in pixels.
     #[wasm_bindgen(getter)]
     pub fn height(&self) -> f64 {
-        self.canvas.height() as f64
+        self.canvas.dimensions().1 as f64
     }
 
     /// Clears the entire canvas and resets the polyline being drawn.
     pub fn clear(&mut self) {
-        web_sys::console::log_1(&"Clearing canvas".into());
-        self.ctx.clear_rect(0.0, 0.0, self.width(), self.height());
+        self.canvas.clear();
         self.points.clear();
     }
 
@@ -69,12 +58,12 @@ impl JarsdrawDemo {
         let point = (x as f64, y as f64);
 
         if let Some(&(prev_x, prev_y)) = self.points.last() {
-            self.ctx.set_stroke_style_str("black");
-            self.ctx.set_line_width(2.0);
-            self.ctx.begin_path();
-            self.ctx.move_to(prev_x, prev_y);
-            self.ctx.line_to(point.0, point.1);
-            self.ctx.stroke();
+            self.canvas.ctx().set_stroke_style_str("black");
+            self.canvas.ctx().set_line_width(2.0);
+            self.canvas.ctx().begin_path();
+            self.canvas.ctx().move_to(prev_x, prev_y);
+            self.canvas.ctx().line_to(point.0, point.1);
+            self.canvas.ctx().stroke();
         }
 
         self.points.push(point);
