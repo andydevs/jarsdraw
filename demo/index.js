@@ -18,7 +18,6 @@ window.addEventListener('resize', () => {
 
 // Create demo
 let demo = new JarsdrawDemo('#jarsdraw-canvas')
-console.log(`Demo size ${demo.width} x ${demo.height}`)
 
 // Hook event handlers
 document.querySelector('#jarsdraw-clear').addEventListener('click', (event) => {

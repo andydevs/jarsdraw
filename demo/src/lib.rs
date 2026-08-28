@@ -2,7 +2,7 @@
 //!
 //! Exposes [`JarsdrawDemo`] to JavaScript, which wraps a `<canvas>` element
 //! and handles drawing operations triggered by user interaction.
-use jarsdraw::Canvas;
+use jarsdraw::{Canvas, Polyline};
 use wasm_bindgen::prelude::*;
 
 /// Initialize console panic hook
@@ -33,18 +33,6 @@ impl JarsdrawDemo {
         })
     }
 
-    /// Returns the canvas width in pixels.
-    #[wasm_bindgen(getter)]
-    pub fn width(&self) -> f64 {
-        self.canvas.dimensions().0 as f64
-    }
-
-    /// Returns the canvas height in pixels.
-    #[wasm_bindgen(getter)]
-    pub fn height(&self) -> f64 {
-        self.canvas.dimensions().1 as f64
-    }
-
     /// Clears the entire canvas and resets the polyline being drawn.
     pub fn clear(&mut self) {
         self.canvas.clear();
@@ -55,17 +43,12 @@ impl JarsdrawDemo {
     /// the drawn line from the previous point (if any).
     pub fn click(&mut self, x: u32, y: u32) {
         web_sys::console::log_1(&format!("Adding point at ({x}, {y})").into());
-        let point = (x as f64, y as f64);
+        self.points.push((x as f64, y as f64));
 
-        if let Some(&(prev_x, prev_y)) = self.points.last() {
-            self.canvas.ctx().set_stroke_style_str("black");
-            self.canvas.ctx().set_line_width(2.0);
-            self.canvas.ctx().begin_path();
-            self.canvas.ctx().move_to(prev_x, prev_y);
-            self.canvas.ctx().line_to(point.0, point.1);
-            self.canvas.ctx().stroke();
-        }
-
-        self.points.push(point);
+        web_sys::console::log_1(&format!("Drawing new polygon").into());
+        let poly = Polyline::from_points(&self.points);
+        self.canvas.ctx().set_stroke_style_str("black");
+        self.canvas.ctx().set_line_width(2.0);
+        self.canvas.draw(&poly);
     }
 }
