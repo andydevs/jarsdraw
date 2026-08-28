@@ -4,7 +4,7 @@
  */
 import { JarsdrawDemo } from 'jarsdraw-demo'
 
-// -- RESIZE CANVAS
+// Handle resize canvas
 const canvas = document.querySelector('#jarsdraw-canvas')
 const main = canvas.closest('main')
 let resizeCanvas = () => {
@@ -12,6 +12,9 @@ let resizeCanvas = () => {
     canvas.height = main.clientHeight
 }
 resizeCanvas()
+window.addEventListener('resize', () => {
+    resizeCanvas()
+})
 
 // Create demo
 let demo = new JarsdrawDemo('#jarsdraw-canvas')
