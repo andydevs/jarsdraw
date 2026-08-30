@@ -53,7 +53,7 @@ This outputs a `pkg/` directory containing the compiled `.wasm` file and JavaScr
 
 ### Demo Application
 
-The `demo/` directory contains a full browser demo showing canvas drawing via click events.
+The `demo/` directory contains a full browser demo showing a responsive grid of canvases, each drawing a different shape.
 
 ```sh
 cd demo

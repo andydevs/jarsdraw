@@ -1,31 +1,26 @@
 /**
- * Demo entry point. Initialises a JarsdrawDemo on the page canvas and
- * wires up click and clear event handlers. Also handles resizing canvas
+ * Demo entry point. Builds a responsive grid of showcase canvases, each bound to its own
+ * per-shape canvas class (e.g. TriangleCanvas). Every tile tracks its own size via
+ * ResizeObserver so its shape stays correctly scaled as the grid reflows.
  */
-import { JarsdrawDemo } from 'jarsdraw-demo'
+import { SquareCanvas } from 'jarsdraw-demo'
 
-// Handle resize canvas
-const canvas = document.querySelector('#jarsdraw-canvas')
-const main = canvas.closest('main')
-let resizeCanvas = () => {
-    canvas.width = main.clientWidth
-    canvas.height = main.clientHeight
-}
-resizeCanvas()
-window.addEventListener('resize', () => {
+const SHOWCASE_ITEMS = [{ selector: '#jarsdraw-canvas-square', Canvas: SquareCanvas }]
+
+for (const { selector, Canvas } of SHOWCASE_ITEMS) {
+    // Create showcase canvas
+    const showcaseCanvas = new Canvas(selector)
+
+    // Handle resize
+    const canvas = document.querySelector(selector)
+    const container = canvas.parentElement
+    let resizeCanvas = () => {
+        canvas.width = container.clientWidth
+        canvas.height = container.clientHeight
+        showcaseCanvas.redraw()
+    }
     resizeCanvas()
-})
-
-// Create demo
-let demo = new JarsdrawDemo('#jarsdraw-canvas')
-
-// Hook event handlers
-document.querySelector('#jarsdraw-clear').addEventListener('click', (event) => {
-    event.stopPropagation()
-    demo.clear()
-})
-document.querySelector('#jarsdraw-canvas').addEventListener('click', (event) => {
-    event.stopPropagation()
-    let { offsetX: x, offsetY: y } = event
-    demo.click(x, y)
-})
+    window.addEventListener('resize', () => {
+        resizeCanvas()
+    })
+}

@@ -10,17 +10,21 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="text-slate-100 min-h-screen flex flex-col">
+<body class="text-slate-100 min-h-screen flex flex-col bg-slate-950">
     <nav class="bg-slate-950 relative after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white/10">
         <div class="relative mx-auto px-4 h-16 flex items-center justify-between space-x-4">
             <h1 class="text-2xl">Jarsdraw: Demo</h1>
-            <div class="flex space-x-4">
-                <button id="jarsdraw-clear" class="bg-red-600 py-2 px-3 rounded-xl font-medium">Clear</button>
-            </div>
         </div>
     </nav>
-    <main class="w-full flex-1">
-        <canvas id="jarsdraw-canvas" class="block w-full h-full bg-gray-500" width="1200" height="900"></canvas>
+    <main class="w-full flex-1 p-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+            <div class="bg-slate-900 rounded-xl overflow-hidden flex flex-col border border-white/10">
+                <h2 class="px-4 py-2 text-sm font-medium text-slate-300 border-b border-white/10">Square</h2>
+                <div class="relative aspect-[4/3]">
+                    <canvas id="jarsdraw-canvas-square" class="absolute inset-0 w-full h-full bg-gray-500"></canvas>
+                </div>
+            </div>
+        </div>
     </main>
     <noscript>This page contains webassembly and javascript content,
         please enable javascript in your browser.</noscript>
