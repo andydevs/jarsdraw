@@ -12,12 +12,14 @@ Two Cargo crates in this repo:
     `Canvas::from_selector` binds to a DOM element, `Canvas::draw` dispatches to a `Draw`.
   - `draw.rs` — `Draw` trait: implemented by anything that can render itself onto a `Canvas`.
   - `polyline.rs` — `Polyline`: a `Draw` primitive rendering a connected sequence of points.
-  - `styled.rs` — `Style`/`Shape`/`Styled`: chainable stroke styling (`.into_styled().stroke(..).line_width(..)`)
-    layered on top of any `Shape` (a `Draw` + `Sized` type).
-  - `lib.rs` — re-exports the public API: `Canvas`, `Draw`, `Polyline`, `Shape`, `Style`, `Styled`.
+  - `styled.rs` — `Style`/`Styled`: chainable stroke styling (`Styled::new(shape).stroke(..).line_width(..)`)
+    layered on top of any `Draw` shape.
+  - `lib.rs` — re-exports the public API: `Canvas`, `Draw`, `Polyline`, `Style`, `Styled`.
 - **`demo/`** — a separate `jarsdraw-demo` crate plus a webpack/JS front end (`demo/index.js`,
-  `demo/index.html`) that exercises the library: click-to-add-point polyline drawing on a
-  resizable canvas, wired up via `wasm-bindgen`.
+  `demo/index.html`, `demo/bootstrap.js`) that exercises the library: a responsive grid of
+  showcase canvases, each backed by its own standalone `#[wasm_bindgen]` demo module in
+  `demo/src/` (e.g. `square.rs` → `SquareCanvas`) that draws and resizes independently, wired
+  up via `wasm-bindgen`.
 
 ## Conventions
 

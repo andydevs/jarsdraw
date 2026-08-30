@@ -1,7 +1,8 @@
 /**
  * Demo entry point. Builds a responsive grid of showcase canvases, each bound to its own
- * per-shape canvas class (e.g. TriangleCanvas). Every tile tracks its own size via
- * ResizeObserver so its shape stays correctly scaled as the grid reflows.
+ * per-shape canvas class (e.g. SquareCanvas). Every tile resizes its canvas to fill its
+ * container and redraws on the window's `resize` event, so its shape stays correctly
+ * scaled as the grid reflows.
  */
 import { SquareCanvas } from 'jarsdraw-demo'
 

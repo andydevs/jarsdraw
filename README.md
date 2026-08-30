@@ -25,12 +25,11 @@ jarsdraw = { path = "/path/to/jarsdraw" }
 Bind a `Canvas` to a `<canvas>` element, build a shape, and draw it:
 
 ```rust
-use jarsdraw::{Canvas, Polyline, Shape as _};
+use jarsdraw::{Canvas, Polyline, Styled};
 
 let canvas = Canvas::from_selector("#my-canvas")?;
 
-let line = Polyline::from_points(&[(0.0, 0.0), (100.0, 100.0), (100.0, 0.0)])
-    .into_styled()
+let line = Styled::new(Polyline::from_points(&[(0.0, 0.0), (100.0, 100.0), (100.0, 0.0)]))
     .stroke("red")
     .line_width(3.0);
 
@@ -38,8 +37,8 @@ canvas.draw(&line);
 ```
 
 - `Draw` is the trait implemented by every drawable primitive (currently `Polyline`).
-- `Shape` extends `Draw` with `.into_styled()`, which wraps a shape in a `Styled` so its
-  stroke color and line width can be set via chained calls before drawing.
+- `Styled::new(shape)` wraps any `Draw` value so its stroke color and line width can be set
+  via chained calls before drawing.
 
 ### Building the WASM Package
 
