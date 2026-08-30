@@ -7,7 +7,7 @@ use wasm_bindgen::prelude::*;
 const MARGIN: f64 = 0.24;
 
 // Define Corners
-const CORNERS: [(f64, f64); 5] = [(0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0), (0.0, 0.0)];
+const CORNERS: [(f64, f64); 4] = [(0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0)];
 
 /// Draws a closed square, scaled to fit the canvas.
 #[wasm_bindgen]
@@ -59,7 +59,7 @@ impl SquareCanvas {
             .collect();
 
         // Draw square
-        let styled = Styled::new(Polyline::from_points(&points))
+        let styled = Styled::new(Polyline::new(&points).closed(true))
             .stroke("#3b82f6")
             .line_width(3.0);
         self.canvas.draw(&styled);

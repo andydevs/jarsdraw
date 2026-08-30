@@ -11,6 +11,10 @@ Two Cargo crates in this repo:
   - `canvas.rs` — `Canvas`: wraps an `HtmlCanvasElement` + `CanvasRenderingContext2d`;
     `Canvas::from_selector` binds to a DOM element, `Canvas::draw` dispatches to a `Draw`.
   - `draw.rs` — `Draw` trait: implemented by anything that can render itself onto a `Canvas`.
+  - `macros.rs` — internal `builder_fn!`/`builder_fns!` macros for generating chainable
+    "with"-style setter methods, one at a time or as a whole `impl` block, with an
+    auto-generated docstring skeleton around a one-clause description per field (used by
+    `polyline.rs` and `styled.rs`); not part of the public API.
   - `polyline.rs` — `Polyline`: a `Draw` primitive rendering a connected sequence of points.
   - `styled.rs` — `Style`/`Styled`: chainable stroke styling (`Styled::new(shape).stroke(..).line_width(..)`)
     layered on top of any `Draw` shape.

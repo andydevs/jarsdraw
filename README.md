@@ -29,7 +29,7 @@ use jarsdraw::{Canvas, Polyline, Styled};
 
 let canvas = Canvas::from_selector("#my-canvas")?;
 
-let line = Styled::new(Polyline::from_points(&[(0.0, 0.0), (100.0, 100.0), (100.0, 0.0)]))
+let line = Styled::new(Polyline::new(&[(0.0, 0.0), (100.0, 100.0), (100.0, 0.0)]))
     .stroke("red")
     .line_width(3.0);
 
