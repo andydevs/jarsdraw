@@ -2,7 +2,7 @@
 //!
 //! Exposes [`JarsdrawDemo`] to JavaScript, which wraps a `<canvas>` element
 //! and handles drawing operations triggered by user interaction.
-use jarsdraw::{Canvas, Polyline, Shape as _};
+use jarsdraw::{Canvas, Polyline, Styled};
 use wasm_bindgen::prelude::*;
 
 /// Initialize console panic hook
@@ -62,12 +62,9 @@ impl JarsdrawDemo {
     pub fn click(&mut self, x: u32, y: u32) {
         web_sys::console::log_1(&format!("Adding point at ({x}, {y})").into());
         self.points.push((x as f64, y as f64));
-
         web_sys::console::log_1(&format!("Drawing new polygon").into());
-        let poly = Polyline::from_points(&self.points)
-            .into_styled()
-            .stroke("black")
-            .line_width(2.0);
-        self.canvas.draw(&poly);
+        let poly = Polyline::from_points(&self.points);
+        let styled = Styled::new(poly).stroke("black").line_width(2.0);
+        self.canvas.draw(&styled);
     }
 }
