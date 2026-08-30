@@ -1,0 +1,52 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "demo: start dev server",
+            "type": "shell",
+            "command": "npm",
+            "args": ["start"],
+            "options": {
+                "cwd": "${workspaceFolder}/demo"
+            },
+            "isBackground": true,
+            "problemMatcher": {
+                "owner": "webpack",
+                "pattern": {
+                    "regexp": "."
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "webpack .* compiling",
+                    "endsPattern": "compiled (successfully|with)"
+                }
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated"
+            }
+        },
+        {
+            "label": "cargo check (lib)",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["check"],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": ["$rustc"],
+            "group": "build"
+        },
+        {
+            "label": "cargo check (demo)",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["check"],
+            "options": {
+                "cwd": "${workspaceFolder}/demo"
+            },
+            "problemMatcher": ["$rustc"],
+            "group": "build"
+        }
+    ]
+}

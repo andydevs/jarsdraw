@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Demo (Firefox)",
+            "type": "firefox",
+            "request": "launch",
+            "url": "http://localhost:8080",
+            "webRoot": "${workspaceFolder}/demo",
+            "preLaunchTask": "demo: start dev server"
+        },
+        {
+            "name": "Launch Demo (Chrome)",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:8080",
+            "webRoot": "${workspaceFolder}/demo",
+            "preLaunchTask": "demo: start dev server"
+        },
+        {
+            "name": "Launch Demo (Edge)",
+            "type": "msedge",
+            "request": "launch",
+            "url": "http://localhost:8080",
+            "webRoot": "${workspaceFolder}/demo",
+            "preLaunchTask": "demo: start dev server"
+        }
+    ]
+}
